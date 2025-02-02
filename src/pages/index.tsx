@@ -263,7 +263,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
 }
 
 export default function Home() {
-  const [boxIds, setBoxIds] = useState<Set<string>>(new Set());
+  const [boxIds, setBoxIds] = useState<Set<string>>(()=>new Set([uuidv4()]));
 
   const addBox = () => {
     const newId = uuidv4();
