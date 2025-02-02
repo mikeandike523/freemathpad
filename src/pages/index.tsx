@@ -190,6 +190,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
             />
             <Div display="flex" flexDirection="row" gap="8px">
               <Button
+                title="Copy Image To Clipboard"
                 css={iconButtonCss}
                 onClick={handleCopyImage}
                 disabled={latex.length === 0}
@@ -197,6 +198,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 <FaCamera />
               </Button>
               <Button
+                title="Download Image"
                 css={iconButtonCss}
                 onClick={handleDownloadImage}
                 disabled={latex.length === 0}
@@ -204,9 +206,10 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 <FaDownload />
               </Button>
               <Button
+                title="Clear Equation"
                 css={iconButtonCss}
                 disabled={latex.length === 0}
-                backgroundColor="yellow"
+                backgroundColor="lightyellow"
                 onClick={() => {
                   mathfieldRef.current?.setValue("");
                   mathfieldRef.current?.blur();
@@ -217,9 +220,9 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 <FaBroom />
               </Button>
               <Button
+                title="Delete Equation"
                 css={iconButtonCss}
-                disabled={latex.length === 0}
-                backgroundColor="red"
+                backgroundColor="lightred"
                 onClick={onDelete}
               >
                 <FaTrash />
@@ -240,6 +243,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 {latex}
               </Span>
               <Span
+                title="Add New Equation"
                 userSelect="none"
                 fontSize="24px"
                 cursor="pointer"
