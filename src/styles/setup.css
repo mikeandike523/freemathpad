@@ -1,0 +1,103 @@
+/*
+
+setup.css
+
+A combination of css-reset style properties as well as some opinionated default settings of my own.
+Broad settings that affect the entire application and its interaction with browsers.
+Not intended for app theming. That should be done elsewhere and likely made dynamic.
+
+*/
+
+:root {
+  --rem-size: 16px;
+  /* Other root-level variables */
+}
+
+/* 
+    Make border-box the default
+    Make sure to also do the recommended pseudoclass handling
+*/
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 
+    Remove margin and padding from all elements
+    Some may not recommend this but I always prefer
+    to explicitly design margin and padding and 
+    not rely on browser defaults
+
+    Make sure to also to the recommended pseudoclass handling
+ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+/*
+    Expand the body to take up the entire viewport
+    and enable predictable scrolling behavior
+    In my opinion, the fact that this is not the default is surprising
+    Probably a holdover from when the web was more informational than interactive
+ */
+body {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+/*
+    Make the NextJS application root take up the entire viewport
+    and enable predictable scrolling behavior
+    Same reasons as for the body
+ */
+#__next {
+  width: 100vw;
+  height: 100vh;
+  overflow: auto;
+}
+
+/*
+    Change spans to be inline-block by default instead of inline
+    In my opinion this is the better default as inline-block enables adherence
+    to the width and height attributes
+
+    Also, if width and height are not present then it behaves identically to inline
+    TBH, in most cases, inline-block is always better than inline due to this fact
+ */
+span {
+  display: inline-block;
+}
+
+/*
+   Provide backup font settings that adhere to modern web design
+ */
+
+/* For normal text */
+/* Font family "sans-serif" */
+*,
+*::before,
+*::after {
+  font-family: sans-serif;
+}
+
+/* For any <code> blocks */
+/* Font family "monospace" */
+code {
+  font-family: monospace;
+}
+
+/* Each browser will decide what these settings mean,
+which is appropriate behavior for a fallback */
+
+/*
+Set the root em according to the global variable
+*/
+html {
+  font-size: var(--rem-size);
+}
