@@ -209,7 +209,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 title="Clear Equation"
                 css={iconButtonCss}
                 disabled={latex.length === 0}
-                backgroundColor="lightyellow"
+                backgroundColor="yellow"
                 onClick={() => {
                   mathfieldRef.current?.setValue("");
                   mathfieldRef.current?.blur();
@@ -222,7 +222,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
               <Button
                 title="Delete Equation"
                 css={iconButtonCss}
-                backgroundColor="lightred"
+                backgroundColor="red"
                 onClick={onDelete}
               >
                 <FaTrash />
