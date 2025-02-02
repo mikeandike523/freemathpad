@@ -243,7 +243,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 {latex}
               </Span>
               <Span
-                title="Add New Equation"
+                title="Copy LaTeX Code"
                 userSelect="none"
                 fontSize="24px"
                 cursor="pointer"
@@ -263,7 +263,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
 }
 
 export default function Home() {
-  const [boxIds, setBoxIds] = useState<Set<string>>(()=>new Set([uuidv4()]));
+  const [boxIds, setBoxIds] = useState<Set<string>>(() => new Set([uuidv4()]));
 
   const addBox = () => {
     const newId = uuidv4();
@@ -305,6 +305,7 @@ export default function Home() {
           <MathInputBox key={id} onDelete={() => removeBox(id)} />
         ))}
         <Button
+          title="Add New Equation"
           onClick={addBox}
           css={iconButtonCss}
           width="64px"
