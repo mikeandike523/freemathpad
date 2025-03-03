@@ -94,23 +94,78 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
 
       const dpiScale = 300 / 96;
 
-      // Try to locate the inner rendered math element within MathLive’s shadow DOM.
-      // (Inspect your rendered element in DevTools to confirm the correct selector.)
-      let targetElement: HTMLElement = mathfieldRef.current;
-      if (mathfieldRef.current.shadowRoot) {
-        const innerMath =
-          mathfieldRef.current.shadowRoot.querySelector(".ML__content");
-        if (innerMath) {
-          targetElement = innerMath as HTMLElement;
-        }
-      }
+      // Create a temporary clone of the mathfield for capturing
+      const tempContainer = document.createElement("div");
+      tempContainer.style.position = "absolute";
+      tempContainer.style.left = "-9999px";
+      tempContainer.style.top = "-9999px";
+      tempContainer.style.width = "auto"; // Allow content to determine width
+      document.body.appendChild(tempContainer);
 
-      // Render the chosen element with html2canvas
-      const canvas = await html2canvas(targetElement, {
-        backgroundColor: "white",
-        scale: dpiScale,
-      });
-      return canvas;
+      // Clone the mathfield element
+      const tempMathField = mathfieldRef.current.cloneNode(true) as HTMLElement;
+
+      // If we're using the inner content, we need to wait for the shadow DOM to be ready
+      if (mathfieldRef.current.shadowRoot) {
+        // Set the value directly to ensure the clone has the same content
+        (tempMathField as unknown as {value: string}).value = mathfieldRef.current.getValue();
+
+        // Remove width:100% styling to allow natural width
+        tempMathField.style.width = "auto";
+        tempMathField.style.maxWidth = "none";
+
+        tempContainer.appendChild(tempMathField);
+
+        // Wait a moment for the shadow DOM to render
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        // Now find the inner math content in the clone
+        let targetElement: HTMLElement;
+        if (tempMathField.shadowRoot) {
+          const innerMath =
+            tempMathField.shadowRoot.querySelector(".ML__content");
+          if (innerMath) {
+            targetElement = innerMath as HTMLElement;
+          } else {
+            targetElement = tempMathField;
+          }
+        } else {
+          targetElement = tempMathField;
+        }
+
+        // Render the chosen element with html2canvas
+        const canvas = await html2canvas(targetElement, {
+          backgroundColor: "transparent",
+          scale: dpiScale,
+        });
+
+        // Clean up the temporary elements
+        document.body.removeChild(tempContainer);
+
+        return canvas;
+      } else {
+        // Now find the inner math content in the clone
+        let targetElement: HTMLElement;
+        if (tempMathField.shadowRoot) {
+          const innerMath =
+            tempMathField.shadowRoot.querySelector(".ML__content");
+          if (innerMath) {
+            targetElement = innerMath as HTMLElement;
+          } else {
+            targetElement = tempMathField;
+          }
+        } else {
+          targetElement = tempMathField;
+        }
+
+        // Render the chosen element with html2canvas
+        const canvas = await html2canvas(targetElement, {
+          backgroundColor: "transparent",
+          scale: dpiScale,
+        });
+
+        return canvas;
+      }
     } catch (error) {
       console.error("Error capturing mathfield:", error);
       return null;
