@@ -8,6 +8,7 @@ import {
   FaDownload,
   FaTrash,
   FaPlus,
+  FaCopy,
 } from "react-icons/fa6";
 import sanitize from "sanitize-filename";
 import { v4 as uuidv4 } from "uuid";
@@ -29,7 +30,6 @@ import {
 const iconButtonCss = css`
   width: 48px;
   height: 48px;
-  line-height: 0;
   font-size: 24px;
   border: none;
   transform-origin: center;
@@ -108,7 +108,8 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
       // If we're using the inner content, we need to wait for the shadow DOM to be ready
       if (mathfieldRef.current.shadowRoot) {
         // Set the value directly to ensure the clone has the same content
-        (tempMathField as unknown as {value: string}).value = mathfieldRef.current.getValue();
+        (tempMathField as unknown as { value: string }).value =
+          mathfieldRef.current.getValue();
 
         // Remove width:100% styling to allow natural width
         tempMathField.style.width = "auto";
@@ -249,8 +250,43 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
                 css={iconButtonCss}
                 onClick={handleCopyImage}
                 disabled={latex.length === 0}
+                position="relative"
+                overflow="visible"
               >
-                <FaCamera />
+                <Div
+                  position="absolute"
+                  top="0"
+                  left="0"
+                  right="0"
+                  bottom="0"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                >
+                  <FaCamera
+                  css={css`
+                    color: green;
+                    transform: translate(-6px, -6px);
+                    `}
+                  />
+                </Div>
+                <Div
+                  position="absolute"
+                  width="48px"
+                  height="48px"
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  top="0"
+                  left="0"
+                  right="0"
+                  bottom="0"
+                >
+                  <FaCopy css={css`
+                  color: blue;
+                    transform: translate(6px, 6px);
+                    `} />
+                </Div>
               </Button>
               <Button
                 title="Download Image"
