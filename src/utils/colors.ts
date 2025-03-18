@@ -43,7 +43,7 @@ export function increaseOrDecreaseSaturation(color: string, factor: number): str
     const hsl = colorObj.hsl();
     const currentSaturation = hsl.saturationl()
     const newSaturation = clamp(currentSaturation * factor, 0, 100);
-    return colorObj.saturate(newSaturation / currentSaturation - 1).hsl().string();
+    return colorObj.saturationl(newSaturation).hsl().string();
   } catch (error) {
     throw new ColorParsingError(color, error instanceof Error ? error : undefined);
   }

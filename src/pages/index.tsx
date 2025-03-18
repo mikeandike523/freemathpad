@@ -26,30 +26,9 @@ import {
   P,
   Span,
 } from "style-props-html";
+import DualIconButton from "@/components/DualIconButton";
 
-const iconButtonCss = css`
-  width: 48px;
-  height: 48px;
-  font-size: 24px;
-  border: none;
-  transform-origin: center;
-  &:hover:not(:disabled) {
-    transform: scale(1.1);
-  }
-  &:active:not(:disabled) {
-    transform: scale(0.9);
-  }
-  cursor: pointer;
-  user-select: none;
-  border-radius: 50%;
-  color: black;
-  background-color: lightgrey;
-  transition: all 0.2s ease;
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
+const SNAPSHOT_BACKGROUND_COLOR = "white";
 
 function MathInputBox({ onDelete }: { onDelete: () => void }) {
   const mathfieldRef = useRef<MathfieldElement>(null);
@@ -136,7 +115,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
 
         // Render the chosen element with html2canvas
         const canvas = await html2canvas(targetElement, {
-          backgroundColor: "transparent",
+          backgroundColor: SNAPSHOT_BACKGROUND_COLOR,
           scale: dpiScale,
         });
 
@@ -161,7 +140,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
 
         // Render the chosen element with html2canvas
         const canvas = await html2canvas(targetElement, {
-          backgroundColor: "transparent",
+          backgroundColor: SNAPSHOT_BACKGROUND_COLOR,
           scale: dpiScale,
         });
 
@@ -216,6 +195,7 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
         gap="8px"
         border="2px solid black"
         padding="8px"
+        background="lightgray"
       >
         <Div
           width="100%"
@@ -245,79 +225,65 @@ function MathInputBox({ onDelete }: { onDelete: () => void }) {
               }}
             />
             <Div display="flex" flexDirection="row" gap="8px">
-              <Button
-                title="Copy Image To Clipboard"
-                css={iconButtonCss}
+              <DualIconButton
+                Icon1={FaCamera}
+                Icon2={FaCopy}
+                spacing={6}
+                color1="green"
+                color2="blue"
+                borderThickness={2}
+                size={48}
+                backgroundColor="hsl(235, 90%, 90%)"
+                borderColor="blue"
+                fontSize={18}
                 onClick={handleCopyImage}
                 disabled={latex.length === 0}
-                position="relative"
-                overflow="visible"
-              >
-                <Div
-                  position="absolute"
-                  top="0"
-                  left="0"
-                  right="0"
-                  bottom="0"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <FaCamera
-                  css={css`
-                    color: green;
-                    transform: translate(-6px, -6px);
-                    `}
-                  />
-                </Div>
-                <Div
-                  position="absolute"
-                  width="48px"
-                  height="48px"
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                  top="0"
-                  left="0"
-                  right="0"
-                  bottom="0"
-                >
-                  <FaCopy css={css`
-                  color: blue;
-                    transform: translate(6px, 6px);
-                    `} />
-                </Div>
-              </Button>
-              <Button
-                title="Download Image"
-                css={iconButtonCss}
+                title={"Copy Image"}
+              />
+              <DualIconButton
+                Icon1={FaCamera}
+                Icon2={FaDownload}
+                spacing={6}
+                color1="green"
+                color2="blue"
+                borderThickness={2}
+                size={48}
+                backgroundColor="hsl(235, 90%, 90%)"
+                borderColor="blue"
+                fontSize={18}
                 onClick={handleDownloadImage}
                 disabled={latex.length === 0}
-              >
-                <FaDownload />
-              </Button>
-              <Button
-                title="Clear Equation"
-                css={iconButtonCss}
-                disabled={latex.length === 0}
+                title={"Download Image"}
+              />
+              <DualIconButton
+                Icon1={FaBroom}
                 backgroundColor="yellow"
+                color1="black"
+                borderColor="transparent"
+                borderThickness={0}
+                size={48}
+                fontSize={24}
                 onClick={() => {
                   mathfieldRef.current?.setValue("");
                   mathfieldRef.current?.blur();
 
                   setLatex("");
                 }}
-              >
-                <FaBroom />
-              </Button>
-              <Button
-                title="Delete Equation"
-                css={iconButtonCss}
+                title="Clear Equation"
+                disabled={latex.length === 0}
+              />
+              <DualIconButton
+                Icon1={FaTrash}
                 backgroundColor="red"
+                color1="black"
+                borderColor="transparent"
+                borderThickness={0}
+                size={48}
+                fontSize={24}
                 onClick={onDelete}
-              >
-                <FaTrash />
-              </Button>
+                title="Delete Equation"
+                disabled={latex.length === 0}
+              />
             </Div>
           </Div>
 
@@ -395,17 +361,16 @@ export default function Home() {
         {[...boxIds].map((id) => (
           <MathInputBox key={id} onDelete={() => removeBox(id)} />
         ))}
-        <Button
-          title="Add New Equation"
-          onClick={addBox}
-          css={iconButtonCss}
-          width="64px"
-          height="64px"
-          fontSize="48px"
+        <DualIconButton
+          Icon1={FaPlus}
           backgroundColor="lightgreen"
-        >
-          <FaPlus />
-        </Button>
+          color1="black"
+          borderColor="transparent"
+          borderThickness={0}
+          size={64}
+          fontSize={48}
+          onClick={addBox}
+        />
       </Main>
     </Div>
   );

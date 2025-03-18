@@ -47,14 +47,14 @@ export default forwardRef<HTMLButtonElement, DualIconButtonProps>(
       borderColor,
       Icon1,
       Icon2,
-      spacing = 10,
-      color1 = "currentColor",
-      color2,
-      transitionTimeMillis = 150,
-      hoverScale = 1.05,
-      activeScale = 0.95,
-      hoverSaturationFactor = 1.1,
-      activeLightnessFactor = 0.9,
+      spacing = undefined,
+      color1 = "inherit",
+      color2 = "inherit",
+      transitionTimeMillis = 75,
+      hoverScale = 1.025,
+      activeScale = 0.975,
+      hoverSaturationFactor = 1.5,
+      activeLightnessFactor = 1.5,
       disabledOpacity = 0.65,
       disabled = false,
       loading = false,
@@ -72,12 +72,20 @@ export default forwardRef<HTMLButtonElement, DualIconButtonProps>(
       hoverSaturationFactor
     );
     const activeColor = lightenOrDarkenColor(hoverColor, activeLightnessFactor);
+    console.log(hoverColor, activeColor);
+    const spacingResolved =
+      spacing ??
+      (typeof size === "number" ? `${size / 4}px` : `calc( ${size} / 4 )`);
     return (
       <Button
         width={sizeString}
         height={sizeString}
         transformOrigin="center"
-        transition={`all ${transitionTimeMillis / 1000}s ease-in-out`}
+        transition={`
+background-color ${transitionTimeMillis / 1000}s ease-in-out,
+opacity ${transitionTimeMillis / 1000}s ease-in-out,
+transform ${transitionTimeMillis / 1000}s ease-in-out
+          `.trim()}
         ref={ref}
         borderRadius="50%"
         opacity={disabled ? disabledOpacity : 1}
@@ -114,7 +122,11 @@ export default forwardRef<HTMLButtonElement, DualIconButtonProps>(
           display="flex"
           alignItems="center"
           justifyContent="center"
-          transform={Icon2 ? `translate(-${spacing}px,-${spacing}px)` : "none"}
+          transform={
+            Icon2
+              ? `translate(-${spacingResolved}px,-${spacingResolved}px)`
+              : "none"
+          }
         >
           <Icon1
             css={css`
@@ -134,7 +146,7 @@ export default forwardRef<HTMLButtonElement, DualIconButtonProps>(
             display="flex"
             alignItems="center"
             justifyContent="center"
-            transform={`translate(${spacing}px,${spacing}px)`}
+            transform={`translate(${spacingResolved}px,${spacingResolved}px)`}
           >
             <Icon2
               css={css`
